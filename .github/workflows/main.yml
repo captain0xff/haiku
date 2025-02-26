@@ -33,4 +33,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with: 
           name: haiku.hpkg
-          path: haiku/generated.x86_64/objects/haiku/x86_64/packaging/packages/haiku.hpkg
+          path: generated.x86_64/objects/haiku/x86_64/packaging/packages/haiku.hpkg
