@@ -1,0 +1,31 @@
+name: Build Haiku
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build .hpkg
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install the required deps
+        run:  |
+              yes | sudo apt install git nasm bc autoconf automake texinfo flex bison gawk build-essential unzip wget zip less zlib1g-dev libzstd-dev xorriso libtool gcc-multilib python3
+
+      - name: Build the buildtools
+        run:  |
+               git clone http://github.com/haiku/buildtools.git --depth 1
+               cd $GITHUB_WORKSPACE
+               mkdir generated.x86_64; cd generated.x86_64
+               ../configure --cross-tools-source ../../buildtools --build-cross-tools x86_64 -j$(nproc)
+
+      - name: Build haiku
+        run: |
+              jam -q -j$(nproc) @nightly-anyboot haiku.hpkg
+
+      - name: Upload haiku.hpkg
+        uses: actions/upload-artifact@v4
+        with: 
+          name: haiku.hpkg
+          path: haiku/generated.x86_64/objects/haiku/x86_64/packaging/packages/haiku.hpkg
