@@ -26,6 +26,7 @@ jobs:
 
       - name: Build haiku
         run: |
+              cd generated.x86_64
               jam -q -j$(nproc) @nightly-anyboot haiku.hpkg
 
       - name: Upload haiku.hpkg
