@@ -27,7 +27,7 @@ jobs:
       - name: Build haiku
         run: |
               cd generated.x86_64
-              jam -q @nightly-anyboot haiku.hpkg
+              HAIKU_REVISION=hrev58673 jam -q -j$(nproc) @nightly-anyboot haiku.hpkg
 
       - name: Upload haiku.hpkg
         uses: actions/upload-artifact@v4
